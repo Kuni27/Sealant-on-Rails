@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Apply styles to the table */
+        table {
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        /* Style table headers */
+        th {
+        background-color: #333;
+        color: white;
+        padding: 8px;
+        text-align: left;
+        }
+
+        /* Style alternating rows */
+        tr:nth-child(even) {
+        background-color: #f2f2f2;
+        }
+
+        /* Style table data cells */
+        td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        }
+
+        header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        }
+
+        main {
+        max-width: 800px;
+        margin: 0 auto;
+        }
+
+        footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        }
+
+        .chart-box {
+            width: 40%;
+            display: inline-block;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        canvas {
+            width: 100%;
+            height: 400px;
+        }
+
+        .tab {
+            overflow: hidden;
+        }
+
+        .tab button {
+            background-color: #f2f2f2;
+            float: left;
+            border: 1px solid #ccc;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            transition: 0.1s;
+            color: #000;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: #fff; /* White text on the primary button */
+        }
+
+        .tabcontent {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Impact Report</h1>
+
+    <br>
+    <div class="tab">
+      <button class="tablinks btn btn-primary" onclick="openTab(event, 'chartTab')">Chart</button>
+      <button class="tablinks btn btn-primary" onclick="openTab(event, 'tableTab')">Table</button>
+    </div>
+
+
+    <div id="chartTab" class="tabcontent">
+    <br>
+        <div class="chart-box">
+        <canvas id="groupedChart1"></canvas>
+        </div>
+
+        <div class="chart-container" id="chartForAge">
+          <p><strong>Sealants Grouped By Age</strong><p>
+          <canvas id="chartForAgeCanvas" width="400" height="400"></canvas>
+        </div>
+
+        <div class="chart-container" id="ctxForGrade">
+          <p><strong>Sealants Grouped By Grade</strong><p>
+          <canvas id="chartForGradeCanvas" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <div id="tableTab" class="tabcontent">
+    <br>
+<table>
+    <tr>
+        <th>School Name</th>
+        <th>% of Untreated Decay</th>
+        <th>% of Treated and Untreated Decay</th>
+        <th>% of Sealants present</th>
+        <th>% needing Urgent Care</th>
+        <th>% needing Restorative Care</th>
+
+    </tr>
+    <tr>
+        <% @school_data.each do |data| %>
+            <tr>
+                <td><%= data.SchoolName %></td>
+                <td><%= data.percentage_cavities %></td>
+                <td><%= data.percentage_total_cavities %></td>
+                <td><%= data.percentage_Sealant_cavities %></td>
+                <td><%= data.percentage_Urgent_Care %></td>
+                <td><%= data.percentage_Restorative_Care %></td>
+            </tr>
+        <% end %>
+    </tr>
+</table>
+
+    </div>
+
+<script>
+    document.getElementById('chartTab').style.display = 'block';
+    document.querySelector('.tab button.tablinks:nth-child(1)').classList.add('active')
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName('tabcontent');
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = 'none';
+        }
+        tablinks = document.getElementsByClassName('tablinks');
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(' active', '');
+        }
+        document.getElementById(tabName).style.display = 'block';
+        evt.currentTarget.className += ' active';
+    }
+
+    var ctxForAge = document.getElementById('chartForAgeCanvas').getContext('2d');
+      var chartForAge = new Chart(ctxForAge, {
+        type: 'pie',
+        data: <%= @age_sealants_chart_data.to_json.html_safe %>,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      var ctxForGrade = document.getElementById('chartForGradeCanvas').getContext('2d');
+      var chartForGrade = new Chart(ctxForGrade, {
+        type: 'pie',
+        data: <%= @grade_sealants_chart_data.to_json.html_safe %>,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+    var ctxGrouped1 = document.getElementById('groupedChart1').getContext('2d');
+        var groupedChart1 = new Chart(ctxGrouped1, {
+            type: 'bar',
+            data: <%= @chart_data1.to_json.html_safe %>,
+            options: {
+            scales: {
+                y: {
+                beginAtZero: true
+                }
+            }
+            }
+        });
+</script>
+</body>
+</html>
