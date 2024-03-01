@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Whitelists</h1>
+
+<div id="whitelists">
+  <% @whitelists.each do |whitelist| %>
+    <%= render whitelist %>
+    <p>
+      <%= link_to "Show this whitelist", whitelist %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New whitelist", new_whitelist_path %>
