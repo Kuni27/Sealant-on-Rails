@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @whitelist %>
+
+<div>
+  <%= link_to "Edit this whitelist", edit_whitelist_path(@whitelist) %> |
+  <%= link_to "Back to whitelists", whitelists_path %>
+
+  <%= button_to "Destroy this whitelist", @whitelist, method: :delete %>
+</div>
