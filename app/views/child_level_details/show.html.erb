@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<% if @child_level_detail.present? %>
+  <p>PID: <%= @child_level_detail.PID %></p>
+  <div>
+    <%= link_to "Edit this child level detail", edit_child_level_detail_path(@child_level_detail) %> |
+    <%= link_to "Back to child level details", child_level_details_path %>
+    <%= button_to "Destroy this child level detail", @child_level_detail, method: :delete %>
+  </div>
+<% else %>
+  <p>Child level detail not found</p>
+<% end %>

@@ -1,0 +1,66 @@
+<tr class="hide-row">
+  <% (32).downto(30).each do |tooth_number| %>
+    <td>
+      <%= tooth_number %>
+    </td>
+  <% end %>
+  <% (29).downto(20).each do |tooth_number| %>
+    <td>
+        <%= ('T'.ord).downto('K'.ord).map(&:chr)[29 - tooth_number] %> <br> <%= tooth_number %>
+    </td>
+  <% end %>
+  <% (19).downto(17).each do |tooth_number| %>
+    <td>
+        <%= tooth_number %>
+    </td>
+  <% end %>
+</tr>
+
+
+
+
+<!--        second screening table starts here-->
+<tr class="hide-row">
+  <% (32).downto(17).each do |tooth_number|%>
+    <td data-cell="popup1<%= tooth_number %>">
+      <% teeth_screening = JSON.parse(@child_data1&.TeethScreening || '{}') %>
+      <% selected_value = teeth_screening[tooth_number.to_s] %>
+      <button class="button" id="ScreeningButton<%= tooth_number %>" data-popup="popup1<%= tooth_number %>" onclick="openPopup('popup1<%= tooth_number %>')">
+    <%= selected_value.present? ? selected_value : 'Make a Selection' %>
+    </button>
+    </td>
+  <% end %>
+</tr>
+
+
+
+<!--        second preventative table starts here30 19-->
+<tr class="hide-row">
+  <% (32).downto(17).each do |tooth_number| %>
+    <td data-cell="popup2<%= tooth_number %>">
+          <% if tooth_number == 30 || tooth_number == 19 %>
+          <% teeth_preventative = JSON.parse(@child_data1&.TeethPreventative || '{}') %>
+          <% selected_value = teeth_preventative[tooth_number.to_s] %>
+          <button class="button" id="PreventativeButton<%= tooth_number %>" data-popup="popup2<%= tooth_number %>" onclick="openPopup('popup2<%= tooth_number %>')">
+        <%= selected_value.present? ? selected_value : 'Make a Selection' %>
+    </button>
+          <% end %>
+        </td>
+  <% end %>
+</tr>
+
+
+<!--        second follow up table starts here-->
+<tr class="hide-row">
+  <% (32).downto(17).each do |tooth_number| %>
+<td data-cell="popup3<%= tooth_number %>">
+      <% if tooth_number == 30 || tooth_number == 19 %>
+      <% teeth_followup = JSON.parse(@child_data1&.TeethFollowup|| '{}') %>
+      <% selected_value = teeth_followup[tooth_number.to_s] %>
+      <button class="button" id="FollowupButton<%= tooth_number %>" data-popup="popup3<%= tooth_number %>" onclick="openPopup('popup3<%= tooth_number %>')">
+    <%= selected_value.present? ? selected_value : 'Make a Selection' %>
+</button>
+      <% end %>
+    </td>
+  <% end %>
+</tr>

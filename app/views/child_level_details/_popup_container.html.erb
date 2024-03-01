@@ -1,0 +1,42 @@
+ <% (1..3).each do |row_number| %> <!-- Loop for each row -->
+  <tr>
+    <% (1..32).each do |tooth_number| %>
+      <div class="popup-container" id="popup<%= row_number %><%= tooth_number %>">
+        <div class="popup-box-small">
+          <p><%= row_number %><%= tooth_number %></p>
+          <!-- Radio button options for the tooth -->
+          <% radio_options = [
+            { value: "D", label: "D - Decay" },
+            { value: "F", label: "F - Filled" },
+            { value: "M", label: "M - Missing" },
+            { value: "SS", label: "SS - Existing Sealant" },
+            { value: "PS", label: "PS - Prescribe Sealant" },
+            { value: "SSC", label: "SSC - Stainless Steel Crown" },
+            { value: "RSD", label: "RSD - Recommended Reseal Done" },
+            { value: "RSND", label: "RSND - Recommended Reseal Not Done" },
+            { value: "no mark", label: "No Treatment (No Mark)" }
+          ] %>
+        <% teeth_data = case row_number
+          when 1
+            JSON.parse(@child_data1&.TeethScreening.to_s.presence || '{}')
+          when 2
+            JSON.parse(@child_data1&.TeethPreventative.to_s.presence || '{}')
+          when 3
+            JSON.parse(@child_data1&.TeethFollowup.to_s.presence || '{}')
+          else
+            {}
+        end %>
+          <% selected_value = teeth_data[tooth_number.to_s] %>
+          <% radio_options.each do |option| %>
+            <label>
+              <input type="radio" name="radio<%= row_number %><%= tooth_number %>" value="<%= option[:value] %>" <%= 'checked' if option[:value] == selected_value %>>
+              <%= option[:label] %>
+            </label>
+          <% end %>
+          <button onclick="closePopup('<%= tooth_number %>','popup<%= row_number %><%= tooth_number %>')">Close</button>
+        </div>
+      </div>
+    <% end %>
+  </tr>
+<% end %>
+

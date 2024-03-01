@@ -1,0 +1,50 @@
+<title>Think of a Title</title>
+
+<%= stylesheet_link_tag "childdata", "data-turbo-track": "reload" %>
+
+<%= javascript_include_tag "formSubmission", "popupHandling", "updateFields", "visibilityLogic" %>
+
+<%= render partial: 'statistics' %>
+<br/>
+<%= render partial: 'buttons' %>
+
+
+<table id="table1">
+    <%= render partial: 'tooth_table1' %>
+</table>
+
+<table id="table2">
+    <%= render partial: 'tooth_table2' %>
+</table>
+
+<!-- Popup containers -->
+  <%= render partial: 'popup_container' %>
+<br/>
+<button class="button-primary" id="showPreventativeFormButton">
+  Preventative Form
+</button>
+<button class="button-primary" id="showFollowUpFormButton">
+  FollowUp Form
+</button>
+<button class="button-primary">
+  <%= link_to "Back", patient_detail_show_path(PID: @pid), class: "link-button" %>
+</button>
+<br/>
+<%= form_with model: @child_level_detail, url: child_level_details_path, method: :post,  local: true, id: 'unique-form-id' do |form| %>
+
+  <%= render partial: 'followup_form' %>
+  <br/>
+  <%= render partial: 'preventative_form' %>
+  <br/>
+
+  <br/>
+  <input type="hidden" id="PID" name="child_level_detail[PID]" value="<%= @pid %>">
+  <input type="hidden" id ="TeethFollowup" name="child_level_detail[TeethFollowup]">
+  <input type="hidden" id ="TeethScreening" name="child_level_detail[TeethScreening]">
+  <input type="hidden" id ="TeethPreventative" name="child_level_detail[TeethPreventative]">
+  <input type="hidden" id="untreatedCavitiesCount" name="child_level_detail[UntreatedCavities]" >
+  <input type="hidden" id="carriesExperience" name="child_level_detail[CarriesExperience]" >
+  <input type="hidden" id="sealentPresent" name="child_level_detail[Sealants]" >
+
+  <input type="submit" value="Submit" id="submitButton">
+<% end %>
